@@ -11,7 +11,5 @@ public class UserRequestDto {
     private String userid;
     @Pattern(regexp = "[a-zA-Z0-9]{8,20}$")
     private String password;
-    private String userinfo;
-    private String username;
 
 }

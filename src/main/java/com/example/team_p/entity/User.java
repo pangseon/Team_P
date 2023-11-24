@@ -13,14 +13,13 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(nullable = true)
-    private String username;
+/*    @Column(nullable = false)
+    private String username;*/
     @Column(nullable = false)
     private String userid;
     @Column(nullable = false)
     private String password;
-    @Column(nullable = true)
-    private String userinfo;
+
 
     public User(String userid,String password){
         this.userid=userid;
@@ -29,10 +28,6 @@ public class User {
     public User(UserRequestDto requestDto){
         this.userid = requestDto.getUserid();
         this.password = requestDto.getPassword();
-        this.username = requestDto.getUsername();
-        this.userinfo = requestDto.getUserinfo();
-
     }
-
 
 }

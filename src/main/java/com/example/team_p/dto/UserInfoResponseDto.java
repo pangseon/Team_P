@@ -1,20 +1,18 @@
-package com.sparta.memo2.dto;
+package com.example.team_p.dto;
 
-import com.sparta.memo2.entity.Memo;
+import com.example.team_p.entity.UserInfo;
 import lombok.Getter;
 
 @Getter
-public class MemoResponseDto {
+public class UserInfoResponseDto {
   private Long id;
-  private String username;
   private String contents;
   private String age;
   private String blog;
   private String git;
 
-  public MemoResponseDto(Memo memo) {
+  public UserInfoResponseDto(UserInfo memo) {
     this.id = memo.getId();
-    this.username = memo.getUsername();
     this.contents = memo.getContents();
     this.age = memo.getAge();
     this.blog = memo.getBlog();
