@@ -22,16 +22,23 @@ public class PostController {
     private final PostService postService;
 
     // 메인 페이지 조회(게시물 전체 조회)
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<List<PostResponseDto>> getPostList() {
         List<PostResponseDto> responseDto = postService.getPostList();
         return ResponseEntity.ok().body(responseDto);
     }
 
     // 생성
-
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public PostResponseDto addPost(@RequestBody PostRequestDto postingRequestDto) {
+        return postService.createPost(postingRequestDto);
+    }
     // 조회
-
+    @GetMapping("/{postId}")
+    public PostResponseDto getPost(@PathVariable Long postId){
+        return postService.getPost(postId);
+    }
     // 수정
     @PutMapping("/{postId}")
     public ResponseEntity<CommonResponseDto> putPost(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long postId, @RequestBody PostRequestDto postRequestDto) {

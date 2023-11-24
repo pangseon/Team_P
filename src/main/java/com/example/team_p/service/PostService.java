@@ -26,9 +26,18 @@ public class PostService {
     }
 
     // 생성
+    public PostResponseDto createPost(PostRequestDto requestDto) {
+        Post post = new Post(requestDto);
+        Post savePost = postRepository.save(post);
+        return new PostResponseDto(savePost);
+    }
+    // 단건 조회
+    public PostResponseDto getPost(Long postId){
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new NullPointerException("해당 게시글을 찾을 수 없습니다."));
 
-    // 조회
-
+        return new PostResponseDto(post);
+    }
     // 수정
     @Transactional
     public PostResponseDto update(User user, Long postId, PostRequestDto postRequestDto) {
