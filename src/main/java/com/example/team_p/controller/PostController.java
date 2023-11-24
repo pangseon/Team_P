@@ -1,6 +1,5 @@
 package com.example.team_p.controller;
 
-
 import com.example.team_p.dto.CommonResponseDto;
 import com.example.team_p.dto.PostRequestDto;
 import com.example.team_p.dto.PostResponseDto;
@@ -20,6 +19,23 @@ import java.util.concurrent.RejectedExecutionException;
 @RequiredArgsConstructor
 public class PostController {
     private final PostService postService;
+
+    //게시글 작성
+    @PostMapping("/posts/create")
+    @ResponseStatus(HttpStatus.CREATED)
+    public PostResponseDto addPost(@RequestBody PostRequestDto postingRequestDto) {
+        return postService.createPost(postingRequestDto);
+    }
+    //postId로 게시글 조회
+    @GetMapping("/posts/{postId}")
+    public PostResponseDto getPost(@PathVariable Long postId){
+        return postService.getPost(postId);
+    }
+    //모든 게시글 조회
+//     @GetMapping("/main")
+//     public List<PostResponseDto> getPosts(){
+//         return postService.getPosts();
+//     }
 
     // 메인 페이지 조회(게시물 전체 조회)
     @GetMapping()
@@ -53,6 +69,5 @@ public class PostController {
             return ResponseEntity.badRequest().body(new CommonResponseDto("작성자만 삭제할 수 있습니다.", HttpStatus.BAD_REQUEST.value()));
         }
     }
-
 
 }
