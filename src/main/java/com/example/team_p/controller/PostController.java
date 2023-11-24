@@ -20,23 +20,6 @@ import java.util.concurrent.RejectedExecutionException;
 public class PostController {
     private final PostService postService;
 
-    //게시글 작성
-    @PostMapping("/posts/create")
-    @ResponseStatus(HttpStatus.CREATED)
-    public PostResponseDto addPost(@RequestBody PostRequestDto postingRequestDto) {
-        return postService.createPost(postingRequestDto);
-    }
-    //postId로 게시글 조회
-    @GetMapping("/posts/{postId}")
-    public PostResponseDto getPost(@PathVariable Long postId){
-        return postService.getPost(postId);
-    }
-    //모든 게시글 조회
-//     @GetMapping("/main")
-//     public List<PostResponseDto> getPosts(){
-//         return postService.getPosts();
-//     }
-
     // 메인 페이지 조회(게시물 전체 조회)
     @GetMapping
     public ResponseEntity<List<PostResponseDto>> getPostList() {
@@ -50,12 +33,14 @@ public class PostController {
     public PostResponseDto addPost(@RequestBody PostRequestDto postingRequestDto) {
         return postService.createPost(postingRequestDto);
     }
-    // 조회
+
+    // 단건 조회
     @GetMapping("/{postId}")
     public PostResponseDto getPost(@PathVariable Long postId){
         return postService.getPost(postId);
     }
-    // 수정
+
+    // 수정(title, content)
     @PutMapping("/{postId}")
     public ResponseEntity<CommonResponseDto> putPost(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long postId, @RequestBody PostRequestDto postRequestDto) {
         try {
