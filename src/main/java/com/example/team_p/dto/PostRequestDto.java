@@ -3,10 +3,11 @@ package com.example.team_p.dto;
 import lombok.Getter;
 import lombok.Setter;
 
-@Setter
 @Getter
+@Setter
 public class PostRequestDto {
     private String title;
-    private String contents;
+    private String content;
     private Long post_id;
+
 }
