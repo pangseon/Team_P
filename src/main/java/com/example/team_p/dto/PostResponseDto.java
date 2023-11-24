@@ -1,5 +1,20 @@
 package com.example.team_p.dto;
 
+// import com.example.team_p.entity.PostEntity;
+// public record PostResponseDto (
+//         Long userId,
+//         Long postId,
+//         String title,
+//         String contents
+// ){
+//     public PostResponseDto(PostEntity post) {
+//         this(
+//                 post.getPostId(),
+//                 post.getUserId(),
+//                 post.getTitle(),
+//                 post.getContents()
+//         );
+// =======
 import com.example.team_p.entity.Post;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,5 +41,11 @@ public class PostResponseDto extends CommonResponseDto {
         this.content = post.getContent();
         this.user = new UserDto(post.getUser());
         this.createDate = post.getCreateDate();
+        
+    public PostResponseDto(PostEntity post){
+      this.id = post.getPostId(),
+      this.title = post.getTitle(),
+      this.content = post.getContents()
+    }
     }
 }
