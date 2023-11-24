@@ -12,13 +12,17 @@ import lombok.NoArgsConstructor;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
+
     @Column(nullable = true)
     private String username;
+
     @Column(nullable = false)
     private String userid;
+
     @Column(nullable = false)
     private String password;
+
     @Column(nullable = true)
     private String userinfo;
 
@@ -26,13 +30,12 @@ public class User {
         this.userid=userid;
         this.password=password;
     }
+
     public User(UserRequestDto requestDto){
         this.userid = requestDto.getUserid();
         this.password = requestDto.getPassword();
         this.username = requestDto.getUsername();
         this.userinfo = requestDto.getUserinfo();
-
     }
-
 
 }
