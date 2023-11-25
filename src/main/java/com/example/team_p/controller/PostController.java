@@ -41,11 +41,12 @@ public class PostController {
         return postService.getPost(postId);
     }
 
+
     // 수정(title, content)
-    @PutMapping("/{postId}")
-    public ResponseEntity<CommonResponseDto> putPost(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long postId, @RequestBody PostRequestDto postRequestDto) {
+    @PutMapping("/{userId}/{postId}")
+    public ResponseEntity<CommonResponseDto> putPost(@PathVariable Long userId, @PathVariable Long postId, @RequestBody PostRequestDto postRequestDto) {
         try {
-            PostResponseDto responseDto = postService.update(userDetails.getUser(), postId, postRequestDto);
+            PostResponseDto responseDto = postService.update(userId, postId, postRequestDto);
             return ResponseEntity.ok().body(responseDto);
         } catch (RejectedExecutionException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new CommonResponseDto("작성자만 수정할 수 있습니다.", HttpStatus.BAD_REQUEST.value()));
@@ -53,14 +54,37 @@ public class PostController {
     }
 
     // 삭제
-    @DeleteMapping("/{postId}")
-    public ResponseEntity<CommonResponseDto> deletePost(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long postId) {
+    @DeleteMapping("/{userId}/{postId}")
+    public ResponseEntity<CommonResponseDto> deletePost(@PathVariable Long userId, @PathVariable Long postId) {
         try {
-            postService.deletePost(userDetails.getUser(), postId);
+            postService.deletePost(userId, postId);
             return ResponseEntity.ok().body(new CommonResponseDto("게시물 삭제가 완료되었습니다.", HttpStatus.OK.value()));
         } catch (RejectedExecutionException | IllegalArgumentException e){
             return ResponseEntity.badRequest().body(new CommonResponseDto("작성자만 삭제할 수 있습니다.", HttpStatus.BAD_REQUEST.value()));
         }
     }
+
+
+//    // 수정(title, content)
+//    @PutMapping("/{postId}")
+//    public ResponseEntity<CommonResponseDto> putPost(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long postId, @RequestBody PostRequestDto postRequestDto) {
+//        try {
+//            PostResponseDto responseDto = postService.update(userDetails.getUser(), postId, postRequestDto);
+//            return ResponseEntity.ok().body(responseDto);
+//        } catch (RejectedExecutionException | IllegalArgumentException e) {
+//            return ResponseEntity.badRequest().body(new CommonResponseDto("작성자만 수정할 수 있습니다.", HttpStatus.BAD_REQUEST.value()));
+//        }
+//    }
+//
+//    // 삭제
+//    @DeleteMapping("/{postId}")
+//    public ResponseEntity<CommonResponseDto> deletePost(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long postId) {
+//        try {
+//            postService.deletePost(userDetails.getUser(), postId);
+//            return ResponseEntity.ok().body(new CommonResponseDto("게시물 삭제가 완료되었습니다.", HttpStatus.OK.value()));
+//        } catch (RejectedExecutionException | IllegalArgumentException e){
+//            return ResponseEntity.badRequest().body(new CommonResponseDto("작성자만 삭제할 수 있습니다.", HttpStatus.BAD_REQUEST.value()));
+//        }
+//    }
 
 }

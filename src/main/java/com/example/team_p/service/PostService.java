@@ -51,8 +51,8 @@ public class PostService {
     }
     // 수정
     @Transactional
-    public PostResponseDto update(User user, Long postId, PostRequestDto postRequestDto) {
-        Post post = getPost(postId, user);
+    public PostResponseDto update(Long userId, Long postId, PostRequestDto postRequestDto) {
+        Post post = getPost(userId, postId);
 
         post.setTitle(postRequestDto.getTitle());
         post.setContent(postRequestDto.getContent());
@@ -61,19 +61,20 @@ public class PostService {
     }
 
     // 삭제
-    public void deletePost(User user, Long postId) {
-        Post post = getPost(postId, user);
+    public void deletePost(Long userId, Long postId) {
+        Post post = getPost(userId, postId);
 
         postRepository.delete(post);
     }
 
 
     // 검증
-    public Post getPost(Long postId, User user) {
+    public Post getPost(Long userId, Long postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
 
-        if(!user.getId().equals(post.getUser().getId())) {
+
+        if(!userRepository.findById(userId).get().getId().equals(post.getUser().getId())) {
             throw new RejectedExecutionException("작성자만 수정할 수 있습니다.");
         }
 
