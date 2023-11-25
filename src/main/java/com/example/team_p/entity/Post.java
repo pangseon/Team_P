@@ -35,6 +35,7 @@ public class Post {
         this.createDate = LocalDateTime.now();
     }
 
+    public void setUser(User user) {this.user = user;}
     public void setTitle(String title) {
         this.title = title;
     }

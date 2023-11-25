@@ -3,6 +3,7 @@ package com.example.team_p.service;
 import com.example.team_p.dto.PostRequestDto;
 import com.example.team_p.dto.PostResponseDto;
 import com.example.team_p.entity.User;
+import com.example.team_p.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PostService {
     private final PostRepository postRepository;
+    private final UserRepository userRepository;
 
 
     // 메인 페이지 조회(게시물 전체 조회)
@@ -30,8 +32,12 @@ public class PostService {
     }
 
     // 생성
-    public PostResponseDto createPost(PostRequestDto requestDto) {
+    public PostResponseDto createPost(PostRequestDto requestDto, Long userId) {
         Post post = new Post(requestDto);
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("등록된 유저가 없습니다."));
+        post.setUser(user);
+
         Post savePost = postRepository.save(post);
         return new PostResponseDto(savePost);
     }

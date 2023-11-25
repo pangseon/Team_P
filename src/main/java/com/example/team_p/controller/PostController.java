@@ -3,6 +3,7 @@ package com.example.team_p.controller;
 import com.example.team_p.dto.CommonResponseDto;
 import com.example.team_p.dto.PostRequestDto;
 import com.example.team_p.dto.PostResponseDto;
+import com.example.team_p.entity.User;
 import com.example.team_p.security.UserDetailsImpl;
 import com.example.team_p.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.concurrent.RejectedExecutionException;
 
-@RequestMapping("/posts")
+@RequestMapping("/api/posts")
 @RestController
 @RequiredArgsConstructor
 public class PostController {
@@ -28,10 +29,10 @@ public class PostController {
     }
 
     // 생성
-    @PostMapping
+    @PostMapping("/{userId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public PostResponseDto addPost(@RequestBody PostRequestDto postingRequestDto) {
-        return postService.createPost(postingRequestDto);
+    public PostResponseDto addPost(@RequestBody PostRequestDto postingRequestDto, @PathVariable Long userId) {
+        return postService.createPost(postingRequestDto, userId);
     }
 
     // 단건 조회
