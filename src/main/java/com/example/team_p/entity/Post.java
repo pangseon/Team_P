@@ -29,13 +29,16 @@ public class Post {
     @JoinColumn(name = "user_id")
     private User user;
 
+
     public Post(PostRequestDto dto) {
         this.title = dto.getTitle();
         this.content = dto.getContent();
         this.createDate = LocalDateTime.now();
     }
 
-    public void setUser(User user) {this.user = user;}
+    public void setUser(User user) {
+        this.user = user;
+    }
     public void setTitle(String title) {
         this.title = title;
     }

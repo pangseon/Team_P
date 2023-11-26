@@ -28,4 +28,5 @@ public class PostResponseDto extends CommonResponseDto {
         this.user = new UserDto(post.getUser());
         this.createDate = post.getCreateDate();
     }
+
 }

@@ -1,4 +1,4 @@
-package com.example.team_p.security;
+package com.example.team_p.service;
 
 import com.example.team_p.entity.User;
 import lombok.Getter;
@@ -24,12 +24,12 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public String getPassword() {
-        return null;
+        return user.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return null;
+        return user.getUsername();
     }
 
     @Override

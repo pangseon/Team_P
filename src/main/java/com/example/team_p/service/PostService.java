@@ -32,27 +32,26 @@ public class PostService {
     }
 
     // 생성
-    public PostResponseDto createPost(PostRequestDto requestDto, Long userId) {
+    public PostResponseDto createPost(PostRequestDto requestDto, User user) {
         Post post = new Post(requestDto);
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("등록된 유저가 없습니다."));
         post.setUser(user);
 
         Post savePost = postRepository.save(post);
+
         return new PostResponseDto(savePost);
     }
 
-    // 단건 조회
+    // 조회(유저)
     public PostResponseDto getPost(Long postId){
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new NullPointerException("해당 게시글을 찾을 수 없습니다."));
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
 
         return new PostResponseDto(post);
     }
     // 수정
     @Transactional
-    public PostResponseDto update(Long userId, Long postId, PostRequestDto postRequestDto) {
-        Post post = getPost(userId, postId);
+    public PostResponseDto update(User user, Long postId, PostRequestDto postRequestDto) {
+        Post post = getPost(user, postId);
 
         post.setTitle(postRequestDto.getTitle());
         post.setContent(postRequestDto.getContent());
@@ -61,20 +60,19 @@ public class PostService {
     }
 
     // 삭제
-    public void deletePost(Long userId, Long postId) {
-        Post post = getPost(userId, postId);
+    public void deletePost(User user, Long postId) {
+        Post post = getPost(user, postId);
 
         postRepository.delete(post);
     }
 
 
     // 검증
-    public Post getPost(Long userId, Long postId) {
+    public Post getPost(User user, Long postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
 
-
-        if(!userRepository.findById(userId).get().getId().equals(post.getUser().getId())) {
+        if(!user.getId().equals(post.getUser().getId())) {
             throw new RejectedExecutionException("작성자만 수정할 수 있습니다.");
         }
 
