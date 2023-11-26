@@ -32,12 +32,21 @@ public class User {
 
 
 
-    public User(String username, String password,String user_url,String age,String user_info,String userid) {
+    public User(String username, String password,String userid,String age,String user_info,String user_url) {
         this.username = username;
         this.userid = userid;
         this.password = password;
         this.age=age;
         this.user_info = user_info;
         this.user_url = user_url;
+    }
+    public void setAge(String age){
+        this.age = age;
+    }
+    public void setUser_info(String info){
+        this.user_info = info;
+    }
+    public void setUser_url(String url){
+        this.user_url = url;
     }
 }
