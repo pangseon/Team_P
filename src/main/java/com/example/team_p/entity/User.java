@@ -1,7 +1,11 @@
 package com.example.team_p.entity;
 
-import com.example.team_p.dto.UserRequestDto;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -12,27 +16,28 @@ import lombok.NoArgsConstructor;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    @Column(nullable = true)
+    private Long id;
+    @Column(nullable = false)
     private String username;
     @Column(nullable = false)
     private String userid;
     @Column(nullable = false)
     private String password;
-    @Column(nullable = true)
-    private String userinfo;
+    @Column(nullable = false)
+    private String age;
+    @Column(nullable = false)
+    private String user_info;
+    @Column(nullable = false)
+    private String user_url;
 
-    public User(String userid,String password){
-        this.userid=userid;
-        this.password=password;
+
+
+    public User(String username, String password,String user_url,String age,String user_info,String userid) {
+        this.username = username;
+        this.userid = userid;
+        this.password = password;
+        this.age=age;
+        this.user_info = user_info;
+        this.user_url = user_url;
     }
-    public User(UserRequestDto requestDto){
-        this.userid = requestDto.getUserid();
-        this.password = requestDto.getPassword();
-        this.username = requestDto.getUsername();
-        this.userinfo = requestDto.getUserinfo();
-
-    }
-
-
 }

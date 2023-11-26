@@ -3,7 +3,9 @@ package com.example.team_p.controller;
 import com.example.team_p.dto.CommonResponseDto;
 import com.example.team_p.dto.LoginRequestDto;
 import com.example.team_p.dto.UserRequestDto;
+import com.example.team_p.jwt.JwtUtil;
 import com.example.team_p.service.UserService;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,37 +20,30 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+    private final JwtUtil jwtUtil;
 
     @PostMapping("/signup")
-    public ResponseEntity<CommonResponseDto> signup(@Valid @RequestBody UserRequestDto userRequestDto){
-
+    public ResponseEntity<CommonResponseDto> signup(@Valid @RequestBody UserRequestDto userRequestDto) {
         try {
             userService.signup(userRequestDto);
-        }
-        catch (IllegalArgumentException exception){
-            return ResponseEntity.badRequest().body(new CommonResponseDto(
-                    "중복된 username 입니다",HttpStatus.BAD_REQUEST.value()
-            ));
+        } catch (IllegalArgumentException exception) {
+            return ResponseEntity.badRequest().body(new CommonResponseDto("중복된 username 입니다.", HttpStatus.BAD_REQUEST.value()));
         }
 
-        return ResponseEntity.status(
-                HttpStatus.CREATED.value())
+        return ResponseEntity.status(HttpStatus.CREATED.value())
                 .body(new CommonResponseDto("회원가입 성공", HttpStatus.CREATED.value()));
     }
-    @PostMapping("/info")
-    public ResponseEntity<CommonResponseDto>login(@Valid @RequestBody LoginRequestDto res){
-        try{
-            userService.login(res);
-        }
-        catch (IllegalArgumentException exception){
-            return ResponseEntity.badRequest().body(new CommonResponseDto(
-                    "id 또는 비밀번호 오류 입니다",HttpStatus.BAD_REQUEST.value()
-            ));
+    @PostMapping("/login")
+    public ResponseEntity<CommonResponseDto> login(@RequestBody UserRequestDto userRequestDto, HttpServletResponse response) {
+        try {
+            userService.login(userRequestDto);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(new CommonResponseDto(e.getMessage(), HttpStatus.BAD_REQUEST.value()));
         }
 
-        return ResponseEntity.status(
-                        HttpStatus.CREATED.value())
-                .body(new CommonResponseDto("로그인 성공", HttpStatus.CREATED.value()));
-        }
+        response.setHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(userRequestDto.getUsername()));
+
+        return ResponseEntity.ok().body(new CommonResponseDto("로그인 성공", HttpStatus.OK.value()));
+    }
     }
 
