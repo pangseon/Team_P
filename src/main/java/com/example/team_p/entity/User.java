@@ -30,8 +30,6 @@ public class User {
     @Column(nullable = false)
     private String user_url;
 
-
-
     public User(String username, String password,String userid,String age,String user_info,String user_url) {
         this.username = username;
         this.userid = userid;
@@ -49,4 +47,5 @@ public class User {
     public void setUser_url(String url){
         this.user_url = url;
     }
+}
 }
