@@ -38,7 +38,7 @@ public class PostController {
     @GetMapping("/{postId}")
     public ResponseEntity<CommonResponseDto> getPost(@PathVariable Long postId) {
         try {
-            PostResponseDto responseDto = postService.getPost(postId);
+            PostResponseDto responseDto = postService.getPostById(postId);
             return ResponseEntity.ok().body(responseDto);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new CommonResponseDto(e.getMessage(), HttpStatus.BAD_REQUEST.value()));
